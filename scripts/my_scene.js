@@ -1,6 +1,11 @@
 // MyScene1クラス
 // 他のJSファイルから呼び出された場合はシーンを返す
 class MyScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'MyScene' });
+        this.hanakoMoveFlag = false; // hanakoの移動フラグを設定
+        this.hanakoTimer = 0; // タイマーを初期化
+    }
 
     // シーンの事前読み込み処理
     preload() {
@@ -92,4 +97,34 @@ class MyScene extends Phaser.Scene {
         this.moveHanako();
     }
 
+    update(time, delta) {
+        let cursors = this.input.keyboard.createCursorKeys();
+        this.arrow_move(cursors, this.player);
+        this.arrow_move2(cursors, this.player1);
+        this.moveHanako();
+
+        // 3秒ごとにhanakoをランダムな位置に移動する
+        this.hanakoTimer += delta; // 経過時間を加算
+        if (this.hanakoTimer > 3000) { // 3000ミリ秒（＝3秒）経過したら
+            this.hanakoMoveFlag = true; // フラグを立てる
+            this.hanakoTimer = 0; // タイマーをリセット
+        }
+
+        // hanakoを移動するフラグが立っている場合にランダムな位置に配置する
+        if (this.hanakoMoveFlag) {
+            const xPosition = Phaser.Math.Between(200, 400); // X座標をランダムに選択
+            const yPosition = Phaser.Math.Between(100, 200); // Y座標をランダムに選択
+            this.hanako.setPosition(xPosition, yPosition); // hanakoの位置を更新
+            this.hanakoMoveFlag = false; // フラグをリセット
+        }
+
+        // taroとhanakoの衝突判定
+        this.physics.overlap(this.player, this.hanako, this.collisionHandler, null, this);
+    }
+
+    // taroとhanakoが衝突したときの処理
+    collisionHandler(player, hanako) {
+        hanako.disableBody(true, true); // hanakoの物理エンジンを停止
+        this.add.text(100, 150, '痛い！', { fontFamily: 'Meiryo', fontSize: '24px', fill: '#ff0000' });
+    }
 }
