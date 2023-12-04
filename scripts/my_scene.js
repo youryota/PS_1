@@ -40,10 +40,15 @@ class MyScene extends Phaser.Scene {
   }
 
   taroHitsHanako() {
-      this.add.text(100, 150, '痛い！', { fontFamily: 'Meiryo', fontSize: '24px', fill: '#fff' });
-      this.hanako.disableBody(true, true); // hanako の物理エンジンを停止
-      this.stopProgram = true; // 追加：プログラム停止フラグをセット
-  }
+    // "痛い"という文字列を表示
+    this.add.text(100, 150, '痛い！', { fontFamily: 'Meiryo', fontSize: '24px', fill: '#fff' });
+    
+    // hanakoの物理エンジンを停止し、オブジェクトを消す
+    this.hanako.disableBody(true, true);
+    
+    // 追加：プログラム停止フラグをセット（必要に応じて追加する）
+    this.physics.pause();
+}
 
   moveHanakoRandomly() {
       const xPosition = Phaser.Math.Between(200, 400); // X座標をランダムに選択
