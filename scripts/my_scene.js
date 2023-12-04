@@ -72,14 +72,14 @@ class MyScene extends Phaser.Scene {
             this.add.text(100, 50, 'Hey!');
         });
 
-        this.input.keyboard.on('keydown-D', () => {
-            // 文字列を消すために、すでに表示されているテキストを取得して破棄する
-            this.children.each((child) => {
-                if (child instanceof Phaser.GameObjects.Text) {
-                    child.destroy();
-                }
-            });
-        });
+        // this.input.keyboard.on('keydown-D', () => {
+        //     // 文字列を消すために、すでに表示されているテキストを取得して破棄する
+        //     this.children.each((child) => {
+        //         if (child instanceof Phaser.GameObjects.Text) {
+        //             child.destroy();
+        //         }
+        //     });
+        // });
     }
   // 毎フレーム実行される繰り返し処理
     update() {
@@ -128,3 +128,4 @@ class MyScene extends Phaser.Scene {
         this.add.text(100, 150, '痛い！', { fontFamily: 'Meiryo', fontSize: '24px', fill: '#ff0000' });
     }
 }
+
