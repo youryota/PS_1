@@ -72,14 +72,14 @@ class MyScene extends Phaser.Scene {
             this.add.text(100, 50, 'Hey!');
         });
 
-        // this.input.keyboard.on('keydown-D', () => {
-        //     // 文字列を消すために、すでに表示されているテキストを取得して破棄する
-        //     this.children.each((child) => {
-        //         if (child instanceof Phaser.GameObjects.Text) {
-        //             child.destroy();
-        //         }
-        //     });
-        // });
+        this.input.keyboard.on('keydown-D', () => {
+            // 文字列を消すために、すでに表示されているテキストを取得して破棄する
+            this.children.each((child) => {
+                if (child instanceof Phaser.GameObjects.Text) {
+                    child.destroy();
+                }
+            });
+        });
     }
   // 毎フレーム実行される繰り返し処理
     update() {
@@ -97,7 +97,7 @@ class MyScene extends Phaser.Scene {
         this.moveHanako();
     }
 
-    update(time, delta) {
+        update(time, delta) {
         let cursors = this.input.keyboard.createCursorKeys();
         this.arrow_move(cursors, this.player);
         this.arrow_move2(cursors, this.player1);
@@ -120,6 +120,11 @@ class MyScene extends Phaser.Scene {
 
         // taroとhanakoの衝突判定
         this.physics.overlap(this.player, this.hanako, this.collisionHandler, null, this);
+
+        // プログラムを停止する
+        this.time.delayedCall(2000, () => {
+            this.scene.pause();
+        }, [], this);
     }
 
     // taroとhanakoが衝突したときの処理
@@ -128,4 +133,3 @@ class MyScene extends Phaser.Scene {
         this.add.text(100, 150, '痛い！', { fontFamily: 'Meiryo', fontSize: '24px', fill: '#ff0000' });
     }
 }
-
