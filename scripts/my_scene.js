@@ -1,4 +1,3 @@
-
 // MyScene1クラス
 // 他のJSファイルから呼び出された場合はシーンを返す
 class MyScene extends Phaser.Scene {
@@ -9,8 +8,8 @@ class MyScene extends Phaser.Scene {
         this.load.image('sky', 'assets/background.png');
         this.load.image('taro', 'assets/taro.png');
         this.load.image('jori', 'assets/jori.png');
+        this.load.image('hanako', 'assets/hanako.png');
     }
-
 
     // シーン初期化処理
     create() {
@@ -24,40 +23,59 @@ class MyScene extends Phaser.Scene {
         this.player = player
         const player1 = this.physics.add.sprite(350, 300, 'jori');
         this.player1 = player1
+        this.text1 = this.add.text(600,400,'MyWorld').setFontSize(32).setColor('#FF0');
+        this.hanako = this.physics.add.sprite(100, 100, 'hanako');
+    }
+
+    moveHanako() {
+        this.input.keyboard.on('keydown-W', () => {
+            // 'w'キーが押されたらHanakoオブジェクトを座標 (100～400, 100) に動的に配置する
+            const xPosition = Phaser.Math.Between(100, 400); // X座標をランダムに選択
+            this.hanako.setPosition(xPosition, 100); // Hanakoオブジェクトの位置を更新
+        });
     }
 
     arrow_move(cursors, object){
-    
         if(cursors.left.isDown){
             console.log("Left");
             object.setVelocityX(-200);
-    
-    
         }else if(cursors.right.isDown){
             console.log("Right!!");
             object.setVelocityX(200);
-    
         }else{
             object.setVelocity(0,0);
         }
     }
 
     arrow_move2(cursors, object){
-    
         if(cursors.left.isDown){
             console.log("Left");
             object.setVelocityX(200);
-    
-    
         }else if(cursors.right.isDown){
             console.log("Right!!");
             object.setVelocityX(-200);
-    
         }else{
             object.setVelocity(0,0);
         }
+
+         // キーボードのイベントを設定する
+         this.input.keyboard.on('keydown-A', () => {
+            this.add.text(100, 50, 'Hello!');
+        });
+
+        this.input.keyboard.on('keydown-S', () => {
+            this.add.text(100, 50, 'Hey!');
+        });
+
+        this.input.keyboard.on('keydown-D', () => {
+            // 文字列を消すために、すでに表示されているテキストを取得して破棄する
+            this.children.each((child) => {
+                if (child instanceof Phaser.GameObjects.Text) {
+                    child.destroy();
+                }
+            });
+        });
     }
-    
   // 毎フレーム実行される繰り返し処理
     update() {
         // if (this.player.x >= D_WIDTH -230 || this.player.y >= D_HEIGHT) this.player_direction = -1;
@@ -71,6 +89,7 @@ class MyScene extends Phaser.Scene {
         let cursors = this.input.keyboard.createCursorKeys();
         this.arrow_move(cursors, this.player);
         this.arrow_move2(cursors, this.player1);
+        this.moveHanako();
     }
 
 }
